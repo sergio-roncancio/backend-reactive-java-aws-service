@@ -1,0 +1,66 @@
+{
+	"info": {
+		"_postman_id": "1adf50ca-9747-4dd0-98be-1ed3ab7a0263",
+		"name": "AWS - Reactive Proyect Pragma",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "15233564"
+	},
+	"item": [
+		{
+			"name": "transfer",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"numberAccountFrom\": \"8868184495837770\",\r\n    \"numberAccountTo\": \"9815570462002610\",\r\n    \"amount\": 1000000\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/transfer",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"transfer"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "movements",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"pageable\": {\r\n        \"pageNumber\": 1,\r\n        \"pageSize\": 5\r\n    },\r\n    \"numberAccount\": \"4942649887701435\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/movement",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"movement"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

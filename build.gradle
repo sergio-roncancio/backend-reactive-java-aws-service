@@ -1,0 +1,108 @@
+buildscript {
+    ext {
+        springBootVersion = '3.5.0'
+        lombokVersion = '1.18.38'
+        springDependencyManager = '1.1.7'
+        jacocoVersion = '0.8.11'
+        logbackVersion = '1.5.18'
+        awsSdkVersion = '2.31.63'
+        apacheCommonsVersion = '3.17.0'
+        reactorVersion = '3.7.6'
+        springContextVersion = '6.2.8'
+        gsonVersion = '2.13.1'
+        modelMapperVersion = '3.2.3'
+        modelRecordVersion = '1.0.0'
+        mapStructVersion = '1.5.5.Final'
+        jakartaValidationVersion = '9.0.1.Final'
+        reactorTestVersion = '3.7.7'
+    }
+}
+
+plugins {
+    id 'org.springframework.boot' version "${springBootVersion}"
+    id 'io.spring.dependency-management' version "${springDependencyManager}"
+    id 'java'
+}
+
+group = 'com.pragma'
+version = '0.0.1-SNAPSHOT'
+description = 'transfers'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+    targetCompatibility = JavaVersion.VERSION_21
+}
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+allprojects {
+    repositories {
+        mavenCentral()
+    }
+}
+repositories {
+    mavenCentral()
+}
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'jacoco'
+
+    task allDependencies(type: DependencyReportTask) {}
+
+    dependencies {
+        implementation "ch.qos.logback:logback-classic:${logbackVersion}"
+        implementation "org.apache.commons:commons-lang3:${apacheCommonsVersion}"
+        implementation "io.projectreactor:reactor-core:${reactorVersion}"
+        compileOnly "org.projectlombok:lombok:${lombokVersion}"
+        annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+        testImplementation "org.springframework.boot:spring-boot-starter-test"
+        testImplementation "io.projectreactor:reactor-test:${reactorTestVersion}"
+    }
+
+    test {
+        useJUnitPlatform()
+        finalizedBy jacocoTestReport
+    }
+    bootJar {
+        enabled = false
+    }
+    jar {
+        enabled = true
+    }
+    jacocoTestReport {
+        dependsOn test
+        reports {
+            xml.required = true
+            html.required = true
+        }
+    }
+    jacoco {
+        toolVersion = "${jacocoVersion}"
+    }
+}
+
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+tasks.withType(Javadoc) {
+    options.encoding = 'UTF-8'
+}
+
+dependencies {
+    implementation "ch.qos.logback:logback-classic:${logbackVersion}"
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+}
+
+bootJar {
+    mainClass = 'com.pragma.app.AccountApplication'
+}
+

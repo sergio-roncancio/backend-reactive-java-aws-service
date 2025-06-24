@@ -1,0 +1,20 @@
+dependencies {
+    implementation project(':application')
+    implementation project(':domain')
+    implementation project(':infrastructure:driven-adapter')
+    implementation project(':infrastructure:driven-adapter:r2dbc-postgresql')
+    implementation project(':infrastructure:driven-adapter:secrets-manager')
+    implementation project(':infrastructure:driven-adapter:sqs')
+    implementation project(':infrastructure:driven-adapter:utils')
+    implementation project(':infrastructure:entry-point')
+    implementation project(':infrastructure:entry-point:reactive-controller')
+    implementation project(':infrastructure:output-point')
+    implementation("org.springframework.boot:spring-boot-starter-webflux")
+}
+
+subprojects {
+    dependencies {
+        implementation project(':application')
+        implementation project(':domain')
+    }
+}

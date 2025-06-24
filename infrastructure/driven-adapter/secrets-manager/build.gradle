@@ -1,0 +1,10 @@
+plugins {
+    id 'java-library'
+}
+
+dependencies {
+    implementation("org.springframework:spring-context:${springContextVersion}")
+    implementation("software.amazon.awssdk:secretsmanager:${awsSdkVersion}")
+    implementation("org.springframework.boot:spring-boot-starter-webflux")
+}
+

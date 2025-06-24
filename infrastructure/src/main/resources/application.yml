@@ -1,0 +1,25 @@
+server:
+  port: 8081
+spring:
+  application:
+    name: transfers
+
+pool:
+  r2dbc:
+    name: api-transfers-connection-pool
+    initialSize: 10
+    maxSize: 15
+    maxIdleTime: 30
+    validationQuery: SELECT 1
+
+aws:
+  region: us-east-1
+  endpoint: http://localhost:4566
+  secrets:
+    db: connection-db-local-reactive-pragma
+
+logging:
+  level:
+    org:
+     springframework:
+       r2dbc: TRACE

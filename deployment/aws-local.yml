@@ -1,0 +1,36 @@
+services:
+  db:
+    container_name: db-reactive
+    image: postgres
+    ports:
+      - "127.0.0.1:${DB_PORT}:${DB_PORT}"
+    environment:
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USERNAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    volumes:
+      - db-data:/var/lib/postgresql/data
+      - ./postgresql-init:/docker-entrypoint-initdb.d
+
+  localstack:
+    container_name: aws-local
+    image: localstack/localstack
+    ports:
+      - "127.0.0.1:4566:4566"
+      - "127.0.0.1:4510-4559:4510-4559"
+    environment:
+      - DEBUG=1
+      - PERSISTENCE=1
+      - SERVICES=sqs,secretsmanager
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    volumes:
+      - data-localstack:/var/lib/localstack
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./variables.env:/etc/localstack/init/ready.d/variables.env
+      - ./localstack-setup.sh:/etc/localstack/init/ready.d/script.sh
+
+volumes:
+  data-localstack:
+  db-data:

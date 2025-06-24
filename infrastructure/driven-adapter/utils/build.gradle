@@ -1,0 +1,11 @@
+plugins {
+    id 'java-library'
+}
+
+dependencies {
+    implementation("org.springframework:spring-context:${springContextVersion}")
+    implementation("com.google.code.gson:gson:${gsonVersion}")
+    implementation("org.modelmapper:modelmapper:${modelMapperVersion}")
+    implementation("org.modelmapper:modelmapper-module-record:${modelRecordVersion}")
+}
+
