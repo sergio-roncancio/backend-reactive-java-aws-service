@@ -22,8 +22,9 @@ class AccountTest {
         var account = new Account(1, NUMBER_ACCOUNT, BigDecimal.TEN,
                 Type.SAVINGS_ACCOUNT, State.ACTIVE, LocalDateTime.now(),
                 LocalDateTime.now());
+        var subtractAmount = BigDecimal.valueOf(11);
 
-        var exception = assertThrows(AccountException.class, () -> account.subtractMoney(BigDecimal.valueOf(11)));
+        var exception = assertThrows(AccountException.class, () -> account.subtractMoney(subtractAmount));
         assertEquals(NOT_FOUNDS_ACCOUNT, exception.getError());
     }
 

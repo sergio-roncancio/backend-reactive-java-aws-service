@@ -30,20 +30,20 @@ class AccountUseCaseTest {
     @InjectMocks
     private AccountUseCase accountUseCase;
 
-    private static final String numberAccount = "NUMBER-ACCOUNT";
+    private static final String NUMBER_ACCOUNT = "NUMBER-ACCOUNT";
 
     @Test
     void shouldReturnAccount(){
 
-        var account = new Account(1, numberAccount, BigDecimal.TEN,
+        var account = new Account(1, NUMBER_ACCOUNT, BigDecimal.TEN,
                 Type.SAVINGS_ACCOUNT, State.ACTIVE, LocalDateTime.now(),
                 LocalDateTime.now());
 
         Mono<Account> monoAccount = Mono.just(account);
 
-        when(accountPort.statement(numberAccount)).thenReturn(monoAccount);
+        when(accountPort.statement(NUMBER_ACCOUNT)).thenReturn(monoAccount);
 
-        var accountStatement = accountUseCase.statement(numberAccount);
+        var accountStatement = accountUseCase.statement(NUMBER_ACCOUNT);
 
         StepVerifier.create(accountStatement)
                 .expectNextMatches(accountReturned -> {
@@ -61,9 +61,9 @@ class AccountUseCaseTest {
 
     @Test
     void shouldReturnErrorWhenAccountNotFound(){
-        when(accountPort.statement(numberAccount)).thenReturn(Mono.empty());
+        when(accountPort.statement(NUMBER_ACCOUNT)).thenReturn(Mono.empty());
 
-        var accountStatement = accountUseCase.statement(numberAccount);
+        var accountStatement = accountUseCase.statement(NUMBER_ACCOUNT);
 
         StepVerifier.create(accountStatement)
                 .expectErrorSatisfies(ex -> {
@@ -71,7 +71,7 @@ class AccountUseCaseTest {
                     AccountException accountException = (AccountException) ex;
                     var error = accountException.getError();
                     assertEquals(ACCOUNT_NOT_EXIST.getCode(), error.getCode());
-                    assertEquals(String.format(ACCOUNT_NOT_EXIST.getMessage() , numberAccount), error.getMessage());
+                    assertEquals(String.format(ACCOUNT_NOT_EXIST.getMessage() , NUMBER_ACCOUNT), error.getMessage());
                 }).verify();
 
     }

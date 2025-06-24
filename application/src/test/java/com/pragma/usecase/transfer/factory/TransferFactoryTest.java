@@ -64,7 +64,6 @@ class TransferFactoryTest {
 
         var accounts = accountCaptor.getAllValues();
 
-        var accountFromValid = accounts.getFirst();
         assertEquals(accountFrom, accounts.getFirst());
         assertEquals(accountTo, accounts.getLast());
 

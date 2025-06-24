@@ -29,7 +29,7 @@ public class PostgresqlConnectionPool {
                 .block();
 
         if(propertiesConnection == null){
-            throw new RuntimeException("Error getting database connection properties");
+            throw new IllegalArgumentException("Error getting database connection properties");
         }
 
         return buildConnectionPool(propertiesConnection, poolProperties);

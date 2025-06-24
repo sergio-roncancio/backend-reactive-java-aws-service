@@ -7,7 +7,7 @@ import lombok.NonNull;
 @Getter
 public class BankException extends RuntimeException {
 
-    private final Error error;
+    private final transient Error error;
 
     public BankException(@NonNull Error error){
         super(error.getMessage());
