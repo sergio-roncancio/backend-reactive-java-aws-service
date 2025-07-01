@@ -13,6 +13,8 @@ import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import static org.apache.commons.lang3.StringUtils.isBlank;
+
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -23,6 +25,9 @@ public class TransferAdapterImpl implements TransferPort {
 
     @Override
     public Mono<Integer> makeTransfer(Transfer createTransfer) {
+        if(createTransfer == null){
+            return Mono.error(new IllegalArgumentException("Must send transfer object to create transfer"));
+        }
         return modelMapperPort.mapReactive(createTransfer, TransferEntity.class)
                 .flatMap(repository::save)
                 .flatMap(transfer -> Mono.just(transfer.getId()));
@@ -30,6 +35,10 @@ public class TransferAdapterImpl implements TransferPort {
 
     @Override
     public Flux<Transfer> getMovements(String numberAccount, Pageable pageable) {
+        if(isBlank(numberAccount) || pageable == null ||
+                pageable.pageSize() <= 0 || pageable.pageNumber() < 0){
+            return Flux.empty();
+        }
         return repository.historicalTransfers(numberAccount,
                 PageRequest.of(pageable.pageNumber(), pageable.pageSize()))
                 .flatMap(this::mapTransfer);

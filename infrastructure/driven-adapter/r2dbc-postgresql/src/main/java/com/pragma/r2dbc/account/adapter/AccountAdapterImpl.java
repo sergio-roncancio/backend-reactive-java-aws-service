@@ -12,7 +12,9 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
+
+import static java.util.Collections.emptyMap;
+import static org.apache.commons.lang3.StringUtils.isBlank;
 
 @Slf4j
 @Component
@@ -25,25 +27,29 @@ public class AccountAdapterImpl implements AccountPort {
     @Override
     public Mono<Map<String, Account>> findAccountsByNumbers(List<String> numbers) {
         if(numbers == null || numbers.isEmpty()) {
-            return Mono.empty();
+            return Mono.just(emptyMap());
         }
         return repository.findAccountsByNumbers(numbers)
-                .collectList()
-                .flatMap(accountsEntities ->
-                    Mono.just(accountsEntities.stream()
-                            .collect(Collectors.toMap(AccountEntity::getNumber,
-                                    accountEntity -> modelMapperPort.map(accountEntity, Account.class))))
+                .collectMap(
+                        AccountEntity::getNumber,
+                        accountEntity -> modelMapperPort.map(accountEntity, Account.class)
                 );
     }
 
     @Override
     public Mono<Account> statement(String numberAccount) {
+        if(isBlank(numberAccount)){
+            return Mono.empty();
+        }
         return repository.findByNumber(numberAccount)
                 .flatMap(account ->  modelMapperPort.mapReactive(account, Account.class));
     }
 
     @Override
     public Mono<Void> updateAccountsBalance(Account accountFrom, Account accountTo) {
+        if(accountTo == null || accountFrom == null || accountFrom.equals(accountTo)) {
+            return Mono.error(new IllegalArgumentException("Must send both the destination account and the source account"));
+        }
         return repository.updateAccountsBalance(accountFrom, accountTo);
     }
 

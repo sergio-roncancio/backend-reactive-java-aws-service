@@ -1,5 +1,6 @@
 package com.pragma.r2dbc.transfer.repository;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @Table("transfer")
 public class TransferEntity {
 

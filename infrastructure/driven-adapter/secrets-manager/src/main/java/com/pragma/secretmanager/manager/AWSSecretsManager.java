@@ -27,14 +27,14 @@ public class AWSSecretsManager implements SecretsManagerPort {
     @Override
     public <T> Mono<T> getSecret(String secretName, Class<T> cls) {
         if(cls == null)
-            return Mono.empty();
+            return Mono.error(() -> new IllegalArgumentException("Class to map secret must not be null"));
         return getSecretValue(secretName)
                 .map(secret -> gsonPort.convertObject(secret, cls));
     }
 
     private Mono<String> getSecretValue(String secretName){
         if(isBlank(secretName)){
-            return Mono.error(() -> new SecretException("Secret name must not be blank or null"));
+            return Mono.error(() -> new IllegalArgumentException("Secret name must not be blank or null"));
         }
         var requestSecret = GetSecretValueRequest.builder().secretId(secretName).build();
         return Mono.fromFuture(() -> secretsManagerClient.getSecretValue(requestSecret))

@@ -1,4 +1,4 @@
-package com.pragma.r2dbc;
+package com.pragma.r2dbc.transaction;
 
 import com.pragma.domain.commons.transactions.Transaction;
 import lombok.RequiredArgsConstructor;
